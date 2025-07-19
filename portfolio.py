@@ -11,21 +11,29 @@ class Portfolio:
         else:
             self.balance = balance
 
-
-    def spend(self, spending_amount, spending_currency):
+    def _validate_input(self, amount, currency, action):
         try:
-            float(spending_amount)
-        except ValueError:
-            raise ValueError("Spending amount must be a number.")
-        if spending_amount < 0:
-            raise ValueError("Cannot spend negative amount.")
-        if spending_currency not in Currencies:
-            raise ValueError("Cannot spend unavailable currency.")
-        available_balance = self.balance[spending_currency] 
-        if available_balance < spending_amount:
+            amount = float(amount)
+        except (ValueError, TypeError):
+            raise ValueError(f"{action} amount must be a number.")
+        if amount < 0:
+            raise ValueError(f"Cannot {action} negative amount.")
+        if currency not in Currencies:
+            raise ValueError(f"Cannot {action} unavailable currency.")
+        return amount
+        
+
+    def spend(self, amount, currency):
+        """Spends a given amount of supported currency. Raises ValueError on invalid input."""
+        amount = self._validate_input(amount, currency, "spend")
+        available_balance = self.balance[currency] 
+        if available_balance < amount:
             raise ValueError("Cannot spend more than available balance.")
-        self.balance[spending_currency] -= spending_amount
+        self.balance[currency] -= amount
+
+    def add(self, amount, currency):
+        """Adds a given amount of supported currency. Raises ValueError on invalid input."""
+        amount = self._validate_input(amount, currency, "add")
+        self.balance[currency] += amount
 
 
-port1 = Portfolio({Currencies.USD: 100,
-                        Currencies.BTC: 0})
