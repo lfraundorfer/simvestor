@@ -19,24 +19,33 @@ No fees, no taxes, one trade per day
 # Classes & Objects
 
 -The user loads a historic dataset
--Object: MarketData
--Method: load_from_csv()
+-Object: MarketDataLoader
+-Method: load_historical_prices()
 -Responsibility:
--should know the current day & price, and provide (n-1) and (n) values at any given time, so we can calculate profit
--Should also know when the user has made a decision
+-Loads data from csv or API
+-Returns a list of prices per day
+-Can be expanded to a dict if I want to add more currencies later
 
 -The user decides on buy | hold | sell
--Object: Gamestate
--Method: calculate_return()
+-Object: GameController
+-Responsibility:
+-advance_game: gets the user's decision from the UI and sends it to currencyConverter (new balances -> portfolio) and advances the gameDay (new value from marketdata list)
+
+-Object: GameSetup
+-Calls MarketDataLoader with the given interval amount, picking a random interval
+
+-Object: DecisionHandler
+-Responsibility: reads Portfolio to see the balances, checks validity of operation, and then sends a valid decision to GameController
 
 -Object: Portfolio
--Method: update_balance()
+-Method: spend(), add()
 -with new balance (USD and/or BTC)
 
--Object: CurrencyMath
--Method: check_assets()
--can I even perform the desired action? (enough assets?)
+-Object: CurrencyConverter
+-Method: convert_currency()
+-To calculate the correct values to be sent to the portfolio
 -Method: round_values()
+-I guess this doesn't have to be a method, can just auto-round
 
 # Next Steps:
 

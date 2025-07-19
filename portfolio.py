@@ -36,4 +36,8 @@ class Portfolio:
         amount = self._validate_input(amount, currency, "add")
         self.balance[currency] += amount
 
+    def get_all_balances(self):
+        return self.balance.copy()
+
+
 

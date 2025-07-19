@@ -34,3 +34,11 @@ def test_add_nonexisting_currency():
 def test_add_nonnumeric_value():
     with pytest.raises(ValueError):
         test_portfolio.add("one", Currencies.USD)
+
+
+# Tests for 'get_all_balances' method
+
+def test_return_copy_of_balance():
+    test_balance = test_portfolio.get_all_balances()
+    test_balance[Currencies.USD] += 1
+    assert test_portfolio.balance[Currencies.USD] == 10
