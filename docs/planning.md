@@ -26,12 +26,28 @@ No fees, no taxes, one trade per day
 -Should also know when the user has made a decision
 
 -The user decides on buy | hold | sell
--Object: userWallet
--Method: update_wallet()
--with new balance
+-Object: Gamestate
+-Method: calculate_return()
+
+-Object: Portfolio
+-Method: update_balance()
+-with new balance (USD and/or BTC)
+
+-Object: CurrencyMath
 -Method: check_assets()
--can I even do it? (enough assets?)
+-can I even perform the desired action? (enough assets?)
+-Method: round_values()
 
 # Next Steps:
 
--
+-Figure out the Portfolio object
+-Tests:
+-Scenario: User wants to spend more than they have
+-Input: 120 USD at 100 USD balance
+-Expected Result: error message, user is prompted to try again
+-Scenario: User wants to spend a negative value
+-Input: -120 USD
+-Expected Result: error message, user is prompted to try again
+-Scenario: User wants to spend a non-numeric value
+-Input: ABCD
+-Expected Result: error message, user is prompted to try again
