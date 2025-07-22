@@ -23,7 +23,7 @@ No fees, no taxes, one trade per day
 -Method: load_historical_prices()
 -Responsibility:
 -Loads data from csv or API
--Returns a list of prices per day
+-Returns a list of prices per day, for a time interval I specify in GameController
 -Can be expanded to a dict if I want to add more currencies later
 
 -The user decides on buy | hold | sell
@@ -53,7 +53,7 @@ currencies, etc
 -Will be passed around to whichever module needs it, will make sure the data values are valid
 
 -Object:DataCleaner
--cleans the file / api return values, based on the mode it receives from GameConfig, and passes them on to MarketDataLoader, who then checks only if a valid response has been loaded, so this is its sole responsibility. the cleaner has the only responsibility of CLEANING the data, so I don't muddy the waters
+-cleans the file and passes btc_price(float), and date(datetime) on to MarketDataLoader, who then checks only if a valid response has been loaded, so this is its sole responsibility. the cleaner has the only responsibility of CLEANING the data, so I don't muddy the waters
 
 # Next Steps:
 

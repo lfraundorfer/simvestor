@@ -10,7 +10,7 @@
 
 -Start with TDD by picking one class that has no pdependencies and a clear in/output
 -This class has one responsibility, and all tests should aim to make sure that it does its job and provides the downstream with the correct data / output
--So, for DataCleaner: job is to clean data, that means, does it work on a sin
+-So, for DataCleaner: job is to clean data, that means, does it work on a single row? Does it return float / datetime?
 -Each class should assume that the data it receives is already valid and processed correctly
 
 -Fail fast! e.g. on DataCleaner, if a value is missing (required for Downstream), fail, and not clean immediately.
