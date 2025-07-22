@@ -1,7 +1,6 @@
 import csv
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List #find out if I need this
 
 @dataclass
 class CleanRow:
@@ -25,10 +24,10 @@ class DataCleaner:
                 for (variable_name, csv_column_name) in self.REQUIRED_COLUMNS.items()
             }
             
-        except ValueError as e:
+        except (ValueError, AttributeError) as e:
             raise ValueError(f"Missing required column in CSV header: {e}")
     
-    def clean_csv(self) -> List[CleanRow]:
+    def clean_csv(self) -> list[CleanRow]:
         with open(self.filename) as csv_file:
             reader = csv.reader(csv_file)
             try:
@@ -51,7 +50,3 @@ class DataCleaner:
                     raise ValueError(f"Error parsing row {row_number}: {e}")
             return cleaned_data
                 
-    
-
-x = DataCleaner("tests/test_return_list.csv").clean_csv()
-print(x)
