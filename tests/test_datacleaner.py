@@ -5,7 +5,7 @@ from datacleaner import DataCleaner
 
 
 def test_read_file_and_return_list():
-    cleanData = DataCleaner.clean('test_return_list.csv', mode='csv')
+    cleanData = DataCleaner('tests/test_return_list.csv').clean_csv()
     assert isinstance(cleanData, list)
 
     
