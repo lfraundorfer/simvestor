@@ -6,6 +6,8 @@ Made by lfraundorfer, 2025.
 
 # How it works
 
+Bitcoin csv from https://coincodex.com/crypto/bitcoin/historical-data/
+
 # How it's built
 
 # Lessons learned

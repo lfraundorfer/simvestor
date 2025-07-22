@@ -47,6 +47,14 @@ No fees, no taxes, one trade per day
 -Method: round_values()
 -I guess this doesn't have to be a method, can just auto-round
 
+-Object:GameConfig
+-Contains the interval for the timeframe, the mode for the DataLoader, the
+currencies, etc
+-Will be passed around to whichever module needs it, will make sure the data values are valid
+
+-Object:DataCleaner
+-cleans the file / api return values, based on the mode it receives from GameConfig, and passes them on to MarketDataLoader, who then checks only if a valid response has been loaded, so this is its sole responsibility. the cleaner has the only responsibility of CLEANING the data, so I don't muddy the waters
+
 # Next Steps:
 
 -Figure out the Portfolio object
