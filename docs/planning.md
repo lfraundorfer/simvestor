@@ -22,9 +22,8 @@ No fees, no taxes, one trade per day
 -Object: MarketDataLoader
 -Method: load_historical_prices()
 -Responsibility:
--Loads data from csv or API
--Returns a list of prices per day, for a time interval I specify in GameController
--Can be expanded to a dict if I want to add more currencies later
+-Loads data from csv
+-Returns a list of CleanRow (price + date) per day, for a time interval I specify in GameSetup, starting at a random seed (as per GameSetup)
 
 -The user decides on buy | hold | sell
 -Object: GameController
@@ -32,7 +31,12 @@ No fees, no taxes, one trade per day
 -advance_game: gets the user's decision from the UI and sends it to currencyConverter (new balances -> portfolio) and advances the gameDay (new value from marketdata list)
 
 -Object: GameSetup
--Calls MarketDataLoader with the given interval amount, picking a random interval
+-Method: setup_gamelength()
+-Default to 10, lets the user enter a gamelength (int), which is then passed to MarketDataLoader
+-Method: generate_seed()
+-Generates a random, yet valid seed (int)
+-Validity meaning seed + gamelength do not exceed the available data set
+-Calls MarketDataLoader with the seed + game length to get a random slice of the daily price data
 
 -Object: DecisionHandler
 -Responsibility: reads Portfolio to see the balances, checks validity of operation, and then sends a valid decision to GameController
