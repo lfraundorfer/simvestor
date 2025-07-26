@@ -11,7 +11,6 @@ class MarketDataLoader:
     def _compute_indices(self):
         start_index = self.seed
         end_index = start_index + self.gamelength +1 #slicing excludes the last index, hence the +1
-
         return (start_index, end_index)
     
 

@@ -46,6 +46,7 @@ No fees, no taxes, one trade per day
 -with new balance (USD and/or BTC)
 
 -Object: CurrencyConverter
+-Responsibility: receives a float value of BTC / USD and converts, while rounding to a manageable level
 -Method: convert_currency()
 -To calculate the correct values to be sent to the portfolio
 -Method: round_values()

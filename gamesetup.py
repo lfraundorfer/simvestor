@@ -1,8 +1,8 @@
 import random
-from datacleaner import CleanRow, DataCleaner
+from datacleaner import CleanRow
 
 class GameSetup():
-    def __init__(self, clean_data:list[CleanRow], game_length:int=1):
+    def __init__(self, clean_data:list[CleanRow], game_length:int):
         self.cleandata = clean_data
         self.gamelength = game_length
 
@@ -22,11 +22,9 @@ class GameSetup():
             raise ValueError(f"Seed out of bounds.")
 
 
-    def _get_clean_data(self) -> list[CleanRow]:
-        return []
-
     def _define_seed_bounds(self) -> int:
         maximum_seed_value = len(self.cleandata) - self.gamelength -1
+        print(maximum_seed_value, self.gamelength)
         return maximum_seed_value
     
     def generate_seed(self) -> int:
@@ -35,9 +33,3 @@ class GameSetup():
         self._check_input_validity(seed, self.gamelength)
         print(seed)
         return seed
-
-
-    #get game_length
-    #then generate seed according to the possible bounds
-
-    #move the check of maximum game_length to this, away from marketdataloader; that should already receive valid seed + game_length

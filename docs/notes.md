@@ -46,3 +46,8 @@
 -Called on a specific instance of a class, can read / change that specific instance's state
 -Class Method: @classmethod def spend(cls,...)
 -Called on the class itself, and can not access self.balance (there is no self!)
+
+## TODO:
+
+-Move Currencies from Portfolio to Config?
+-Add API to datacleaner?
