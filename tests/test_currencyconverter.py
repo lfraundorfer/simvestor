@@ -7,7 +7,6 @@ import pytest
 dailyprices = {Currencies.BTC : 10, Currencies.ETH: 50}
 converter= CurrencyConverter(daily_prices = dailyprices)
 
-
 def test_returns_float():
     converted = converter.convert(amount=100, source_currency=Currencies.BTC, target_currency=Currencies.ETH)
     assert isinstance(converted, float)
@@ -17,10 +16,6 @@ def test_raises_on_nonnumeric_amount():
         converter.convert(amount="100", source_currency=Currencies.BTC, target_currency=Currencies.ETH)
     with pytest.raises(ValueError):
         converter.convert(amount="abc", source_currency=Currencies.BTC, target_currency=Currencies.ETH)
-
-# def test_raises_on_zero_amount():
-#     assert 1
-# do not need to raise an error here - it's fine for holding (not buying or selling)
 
 def test_raises_on_identical_source_and_target_currencies():
     with pytest.raises(ValueError):
@@ -41,11 +36,11 @@ def test_correct_value_calculated():
     converted = converter.convert(amount=100, source_currency=Currencies.BTC, target_currency=Currencies.ETH)
     assert converted == 20.0
 
-def test_zero_or_missing_price_raises_error():
-    assert 1
 
+# def test_raises_on_zero_amount():
+#     assert 1
+# do not need to raise an error here - it's fine for holding (not buying or selling)
 
-
-# clean_data = DataCleaner("tests/test_csv_files/btc_test_data.csv").clean_csv()
-# currency_pair_to_convert = CurrencyConverter(daily_prices = dailyprices)
-# converted_from_usd = currency_pair_to_convert.convert(amount=100, source_currency=Currencies.BTC, target_currency=Currencies.ETH)
+#def test_raise_on_missing_price_info():
+#   assert 1
+# not needed, datacleaner should provide clean i.e. non empty float data
