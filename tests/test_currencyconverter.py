@@ -1,12 +1,46 @@
 from currencyconverter import CurrencyConverter
 from portfolio import Currencies
 from datacleaner import DataCleaner
+import pytest
 
-def test_returns_float_btc():
-    # clean_data = DataCleaner("tests/test_csv_files/btc_test_data.csv").clean_csv()
-    # current_exchange_rate = 100
-    # converted_from_usd = CurrencyConverter.convert(amount=100, source_currency=Currencies.USD, target_currency = Currencies.BTC, exchange_rate = current_exchange_rate)
-    # converted_from_usd = CurrencyConverter.convert(amount=100, source_currency="USD", target_currency = "BTC", exchange_rate = 2)
-    currency_pair_to_convert = CurrencyConverter(amount=100, source_currency="USD", target_currency = "BTC", exchange_rate = 2)
-    converted_from_usd = currency_pair_to_convert.convert()
-    assert isinstance(converted_from_usd, float)
+
+dailyprices = {Currencies.BTC : 10, Currencies.ETH: 50}
+converter= CurrencyConverter(daily_prices = dailyprices)
+
+
+def test_returns_float():
+    converted = converter.convert(amount=100, source_currency=Currencies.BTC, target_currency=Currencies.ETH)
+    assert isinstance(converted, float)
+
+def test_raises_on_nonnumeric_amount():
+    dailyprices = {Currencies.BTC : 10, Currencies.ETH: 50}
+    converter= CurrencyConverter(daily_prices = dailyprices)
+    with pytest.raises(ValueError):
+        converter.convert(amount="100", source_currency=Currencies.BTC, target_currency=Currencies.ETH)
+
+# def test_raises_on_zero_amount():
+#     assert 1
+# do not need to raise an error here - it's fine for holding (not buying or selling)
+
+def test_raises_on_identical_source_and_target_currencies():
+    with pytest.raises(ValueError):
+        converter.convert(amount=100, source_currency=Currencies.BTC, target_currency=Currencies.BTC)
+        
+
+def test_input_currency_not_in_prices():
+    assert 1
+
+def test_raises_on_invalid_amount():
+    assert 1
+
+def test_correct_value_calculated():
+    assert 1
+
+def test_zero_or_missing_price_raises_error():
+    assert 1
+
+
+
+# clean_data = DataCleaner("tests/test_csv_files/btc_test_data.csv").clean_csv()
+# currency_pair_to_convert = CurrencyConverter(daily_prices = dailyprices)
+# converted_from_usd = currency_pair_to_convert.convert(amount=100, source_currency=Currencies.BTC, target_currency=Currencies.ETH)

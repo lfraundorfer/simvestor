@@ -12,12 +12,12 @@ def test_extract_column_indices():
     cleaner = DataCleaner('tests/test_csv_files/test_return_list.csv')
     indices = cleaner._extract_column_indices(["End", "Close"])
     assert indices["date"] == 0
-    assert indices["btc_close_price"] == 1
+    assert indices["close_price"] == 1
 
 def test_output_has_float_and_date():
     cleanData = DataCleaner('tests/test_csv_files/test_return_list.csv').clean_csv()
     for clean_data_entry in cleanData:
-        assert isinstance(clean_data_entry.btc_close_price, float) and isinstance(clean_data_entry.date, datetime.date)
+        assert isinstance(clean_data_entry.close_price, float) and isinstance(clean_data_entry.date, datetime.date)
 
 def test_fail_on_missing_file_headers():
     with pytest.raises(ValueError):

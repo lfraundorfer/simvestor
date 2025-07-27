@@ -3,6 +3,7 @@ from enum import Enum
 class Currencies(Enum):
     USD = "USD"
     BTC = "BTC"
+    ETH = "ETH"
 
 class Portfolio:
     def __init__(self, balance=None):

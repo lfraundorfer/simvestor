@@ -8,11 +8,11 @@ from datetime import datetime
 @dataclass
 class CleanRow:
     date: datetime
-    btc_close_price: float
+    close_price: float
 
 class DataCleaner:
     REQUIRED_COLUMNS = {
-        "btc_close_price": "Close",
+        "close_price": "Close",
         "date": "End"
     }
 
@@ -44,11 +44,11 @@ class DataCleaner:
             cleaned_data = []
             for row_number, row in enumerate(reader, start=2):
                 try:
-                    btc_price_string = row[indices["btc_close_price"]]
-                    btc_price_float = float(btc_price_string)
+                    price_string = row[indices["close_price"]]
+                    price_float = float(price_string)
                     date_string = row[indices["date"]]
                     date_datetime = datetime.strptime(date_string,"%Y-%m-%d").date()
-                    cleaned_data.append(CleanRow(date = date_datetime, btc_close_price= btc_price_float))
+                    cleaned_data.append(CleanRow(date = date_datetime, close_price= price_float))
                 except (ValueError, IndexError) as e:
                     raise ValueError(f"Error parsing row {row_number}: {e}")
             return cleaned_data
