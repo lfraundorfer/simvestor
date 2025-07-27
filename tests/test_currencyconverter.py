@@ -13,10 +13,10 @@ def test_returns_float():
     assert isinstance(converted, float)
 
 def test_raises_on_nonnumeric_amount():
-    dailyprices = {Currencies.BTC : 10, Currencies.ETH: 50}
-    converter= CurrencyConverter(daily_prices = dailyprices)
     with pytest.raises(ValueError):
         converter.convert(amount="100", source_currency=Currencies.BTC, target_currency=Currencies.ETH)
+    with pytest.raises(ValueError):
+        converter.convert(amount="abc", source_currency=Currencies.BTC, target_currency=Currencies.ETH)
 
 # def test_raises_on_zero_amount():
 #     assert 1
@@ -26,15 +26,20 @@ def test_raises_on_identical_source_and_target_currencies():
     with pytest.raises(ValueError):
         converter.convert(amount=100, source_currency=Currencies.BTC, target_currency=Currencies.BTC)
         
-
 def test_input_currency_not_in_prices():
-    assert 1
+    with pytest.raises(ValueError):
+        converter.convert(amount=100, source_currency="TESTCURRENCY", target_currency=Currencies.BTC)
+    with pytest.raises(ValueError):
+        converter.convert(amount=100, source_currency=Currencies.BTC, target_currency="DOGE")
+    with pytest.raises(ValueError):
+        converter.convert(amount=100, source_currency="TESTCURRENCY", target_currency="DOGE")
 
-def test_raises_on_invalid_amount():
-    assert 1
 
 def test_correct_value_calculated():
-    assert 1
+    dailyprices = {Currencies.BTC : 10, Currencies.ETH: 50}
+    converter= CurrencyConverter(daily_prices = dailyprices)
+    converted = converter.convert(amount=100, source_currency=Currencies.BTC, target_currency=Currencies.ETH)
+    assert converted == 20.0
 
 def test_zero_or_missing_price_raises_error():
     assert 1

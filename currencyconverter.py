@@ -6,15 +6,19 @@ class CurrencyConverter:
     def __init__(self, daily_prices: dict):
         self.dailyprices = daily_prices
 
-    def _calc_usd_rate(self, source_currency) ->float:
-        if source_currency != Currencies.USD:
-            source_usd_rate = 1 / self.dailyprices[source_currency]
+    def _calc_usd_rate(self, currency_for_usd_rate) ->float:
+        if currency_for_usd_rate != Currencies.USD:
+            source_usd_rate = 1 / self.dailyprices[currency_for_usd_rate]
             return source_usd_rate        
         return 1.0
 
     def convert(self, amount, source_currency, target_currency) -> float:
         if not isinstance(amount, (int, float)):
             raise ValueError("Please specify a numeric value to convert.")
+        if source_currency not in self.dailyprices:
+            raise ValueError(f"Source currency '{source_currency}' not found.")
+        if target_currency not in self.dailyprices:
+            raise ValueError(f"Target currency '{target_currency}' not found.")
         if source_currency == target_currency:
             raise ValueError("Please specify two different currencies to convert.")
         source_currency_usd_rate = self._calc_usd_rate(source_currency)
