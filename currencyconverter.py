@@ -1,4 +1,4 @@
-from portfolio import Currencies
+from portfolio import Currency
 
 
 class CurrencyConverter:
@@ -7,9 +7,9 @@ class CurrencyConverter:
         self.dailyprices = daily_prices
 
     def _calc_usd_rate(self, currency_for_usd_rate) ->float:
-        if currency_for_usd_rate != Currencies.USD:
+        if currency_for_usd_rate != Currency.USD:
             source_usd_rate = 1 / self.dailyprices[currency_for_usd_rate]
-            return source_usd_rate        
+            return float(source_usd_rate)        
         return 1.0
     
     def _validate_input(self, amount, source_currency, target_currency):

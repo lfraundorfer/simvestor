@@ -1,39 +1,39 @@
 from currencyconverter import CurrencyConverter
-from portfolio import Currencies
+from portfolio import Currency
 from datacleaner import DataCleaner
 import pytest
 
 
-dailyprices = {Currencies.BTC : 10, Currencies.ETH: 50}
+dailyprices = {Currency.BTC : 10, Currency.ETH: 50}
 converter= CurrencyConverter(daily_prices = dailyprices)
 
 def test_returns_float():
-    converted = converter.convert(amount=100, source_currency=Currencies.BTC, target_currency=Currencies.ETH)
+    converted = converter.convert(amount=100, source_currency=Currency.BTC, target_currency=Currency.ETH)
     assert isinstance(converted, float)
 
 def test_raises_on_nonnumeric_amount():
     with pytest.raises(ValueError):
-        converter.convert(amount="100", source_currency=Currencies.BTC, target_currency=Currencies.ETH)
+        converter.convert(amount="100", source_currency=Currency.BTC, target_currency=Currency.ETH)
     with pytest.raises(ValueError):
-        converter.convert(amount="abc", source_currency=Currencies.BTC, target_currency=Currencies.ETH)
+        converter.convert(amount="abc", source_currency=Currency.BTC, target_currency=Currency.ETH)
 
 def test_raises_on_identical_source_and_target_currencies():
     with pytest.raises(ValueError):
-        converter.convert(amount=100, source_currency=Currencies.BTC, target_currency=Currencies.BTC)
+        converter.convert(amount=100, source_currency=Currency.BTC, target_currency=Currency.BTC)
         
 def test_input_currency_not_in_prices():
     with pytest.raises(ValueError):
-        converter.convert(amount=100, source_currency="TESTCURRENCY", target_currency=Currencies.BTC)
+        converter.convert(amount=100, source_currency="TESTCURRENCY", target_currency=Currency.BTC)
     with pytest.raises(ValueError):
-        converter.convert(amount=100, source_currency=Currencies.BTC, target_currency="DOGE")
+        converter.convert(amount=100, source_currency=Currency.BTC, target_currency="DOGE")
     with pytest.raises(ValueError):
         converter.convert(amount=100, source_currency="TESTCURRENCY", target_currency="DOGE")
 
 
 def test_correct_value_calculated():
-    dailyprices = {Currencies.BTC : 10, Currencies.ETH: 50}
+    dailyprices = {Currency.BTC : 10, Currency.ETH: 50}
     converter= CurrencyConverter(daily_prices = dailyprices)
-    converted = converter.convert(amount=100, source_currency=Currencies.BTC, target_currency=Currencies.ETH)
+    converted = converter.convert(amount=100, source_currency=Currency.BTC, target_currency=Currency.ETH)
     assert converted == 20.0
 
 
