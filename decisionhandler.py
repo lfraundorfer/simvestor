@@ -1,20 +1,22 @@
 from dataclasses import dataclass
-from portfolio import Action
+from portfolio import Action, Currency, Portfolio
 
 @dataclass
 class Decision:
     validity: bool
-    action: str
     amount: float
+    currency_to_spend: Currency
 
 
 class DecisionHandler:
-    def handle(self, action, amount:float) -> Decision:
-        if not isinstance(amount, float):
+    def handle(self, amount, currency_to_spend:Currency, portfolio: Portfolio) -> Decision:
+        if not isinstance(portfolio, Portfolio):
+            raise ValueError("Invalid portfolio detected.")
+        if not isinstance(amount, (float,int)):
             raise ValueError("Amount must be numeric.")
-        if not isinstance(action, Action):
-            raise ValueError("Select a valid action.")
-        return Decision(True, action, amount)
+        if not isinstance(currency_to_spend, Currency):
+            raise ValueError("Select a valid currency.")
+        if not portfolio.can_spend(amount, currency_to_spend): 
+            return Decision(False, amount, currency_to_spend)
+        return Decision(True, amount, currency_to_spend)
     
-
-#rename add / spend to buy / sell in portfolio

@@ -6,18 +6,18 @@ class Currency(Enum):
     ETH = "ETH"
 
 class Action(Enum):
-    spend = "spend"
     add = "add"
+    spend = "spend"
 
 
 class Portfolio:
-    def __init__(self, balance=None):
+    def __init__(self, balance:dict=None):
         if balance is None:
             self.balance = {currency: 0.0 for currency in Currency}
         else:
             self.balance = balance
 
-    def _validate_input(self, amount, currency, action):
+    def _validate_input(self, amount, currency, action) -> float:
         try:
             amount = float(amount)
         except (ValueError, TypeError):
@@ -27,6 +27,9 @@ class Portfolio:
         if currency not in Currency:
             raise ValueError(f"Cannot {action} unavailable currency.")
         return amount
+    
+    def can_spend(self, amount:float, currency:Currency) -> bool:
+        return self.balance.get(currency, 0.0) >= amount
         
 
     def spend(self, amount, currency):
