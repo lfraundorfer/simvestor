@@ -23,6 +23,8 @@ class MarketDataLoader:
             sliced_clean_data = self.cleandata[start_index:end_index]
         except TypeError as e:
             raise TypeError(f"Can not use as seed / gamelength: {e}")
+        # Have to reverse because csv is in new -> old order
+        sliced_clean_data.reverse()
         # except IndexError as e:
         #     raise IndexError(f"Game length out of bounds.")
         #this does not raise an error because slicing just automatically stops at the last index

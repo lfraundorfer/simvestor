@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from datetime import datetime
 
 # Receives a CSV file and returns a list of cleaned dates and closing prices for the downstream
-# 
 
 @dataclass
 class CleanRow:
