@@ -1,32 +1,38 @@
 from dataclasses import dataclass
+from portfolio import Portfolio
+from enums import Currency
 
 @dataclass
 class HistoryReport:
     buy_hold_gain: float
+    user_gain: float
 
 
 class HistoryTracker:
-    """Records and provides daily snapshots of portfolio balances."""
-    def __init__(self, initial_price, final_price, initial_portfolio_value):
+    def __init__(self, initial_price, final_price, initial_portfolio_value, portfolio:Portfolio):
         self.initialprice = initial_price
         self.finalprice = final_price
         self.initialportfoliovalue = initial_portfolio_value
-
-    def record(self, day: int, balances: dict):
-        # Copy the balances to avoid mutation issues
-        self.records.append({"day": day, **balances})
-
-    def get_records(self):
-        return self.records
+        self.portfolio = portfolio
+        self.finalportfoliovalue = self._calc_final_portfolio_value()
     
-    def calc_buy_hold(self):
-        btc_bought = self.initialportfoliovalue / self.initialprice
-        final_value = btc_bought * self.finalprice
+    def calc_buy_hold_performance(self):
+        day_one_btc_bought = self.initialportfoliovalue / self.initialprice
+        final_value = day_one_btc_bought * self.finalprice
         percent_gain = ((final_value - self.initialportfoliovalue) / self.initialportfoliovalue) * 100
         return percent_gain
     
+    def _calc_final_portfolio_value(self):
+        btc_final_value = self.portfolio.balance[Currency.BTC] * self.finalprice
+        usd_final_value = self.portfolio.balance[Currency.USD]
+        return btc_final_value + usd_final_value
+    
+    def calc_user_performance(self):
+        percent_gain = ((self._calc_final_portfolio_value() - self.initialportfoliovalue) / self.initialportfoliovalue)*100
+        return percent_gain
+    
     def generate_report(self):
-        return HistoryReport(buy_hold_gain=self.calc_buy_hold())
+        return HistoryReport(buy_hold_gain=self.calc_buy_hold_performance(), user_gain = self.calc_user_performance())
     
 
 
