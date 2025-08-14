@@ -5,6 +5,7 @@ class GameSetup():
     def __init__(self, clean_data:list[CleanRow], game_length:int):
         self.cleandata = clean_data
         self.gamelength = game_length
+        self.seed = self.generate_seed()
 
     
     def _check_input_validity(self, seed, gamelength):

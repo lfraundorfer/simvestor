@@ -51,3 +51,20 @@
 
 -Move Currencies from Portfolio to Config?
 -Add API to datacleaner?
+
+## Brainstorming buy / hold / sell workflow
+
+-user enters "buy / hold / sell"
+-this is parsed and validated by user_input_parser
+-it will (currently) default to BTC, so to increase hidden information, I will not send this via interface. user does not need to know defaults.
+-only the action, buy hold sell or quit, is sent to decisionhandler
+-do I need decisionhandler?
+-I need to check: CAN i buy hold or sell? I can always hold, which is just advancing one day.
+-can I buy? means I need to check portfolio. I can add that to the (then deeper) module portfolio
+-transaction_possible() module (nah, I can just check that in transaction module)
+-transaction(action) function:
+-sets source, target currency for that transaction
+-checks if available in portfolio
+-throws errors
+-converts from USD: have 100 USD; 1 BTC = 10 USD -> #btc = 100 USD / (10 USD / 1 BTC) -> #btc = #USD / btc_price
+-converts to USD: have 10 BTC; 1 BTC = 10 USD -> #usd = #BTC + btc_price
