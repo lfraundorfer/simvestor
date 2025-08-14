@@ -5,7 +5,7 @@ import pytest
 
 
 dailyprices = {Currency.BTC : 10, Currency.ETH: 50}
-converter= CurrencyConverter(daily_prices = dailyprices)
+converter= CurrencyConverter
 
 def test_returns_float():
     converted = converter.convert(amount=100, source_currency=Currency.BTC, target_currency=Currency.ETH)

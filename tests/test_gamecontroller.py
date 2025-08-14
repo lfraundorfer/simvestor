@@ -21,3 +21,12 @@ def test_returns_dict(test_market_data):
     game_controller = GameController(game_day, test_market_data)
     daily_price_dict = game_controller._get_todays_prices(game_day)
     assert isinstance(daily_price_dict, CleanRow)
+
+def test_get_todays_decision(monkeypatch, test_market_data):
+    game_controller = GameController(1, test_market_data, portfolio=None)
+
+    # Pretend the user typed "buy"
+    monkeypatch.setattr("user_input_parser.input", lambda _: "buy")
+
+    decision = game_controller._get_todays_decision()
+    assert decision == Action.BUY
