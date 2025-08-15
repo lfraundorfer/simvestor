@@ -69,7 +69,9 @@ class GameController():
             print(self.portfolio.get_all_balances())
             self._advance_game_day()
 
-        history_tracker = HistoryTracker(initial_price=self._get_todays_prices(1), final_price=self._get_todays_prices(self.gameday-1), initial_portfolio_value=start_money, portfolio=portfolio)
+        history_tracker = HistoryTracker(market_data,
+                                         initial_portfolio_value=start_money, 
+                                         portfolio=portfolio)
         report = history_tracker.generate_report()
         print(f"Buy hold gain: {report.buy_hold_gain} vs user gain {report.user_gain}")
         
@@ -85,7 +87,9 @@ matched_btc_list, matched_sp_list = match_dates(clean_data_sp, clean_data_btc)
 game_setup = GameSetup(matched_btc_list, game_length)
 seed = game_setup.seed
 market_data = MarketDataLoader(matched_btc_list, seed, game_length).load()
-# print(f"Market Data: {market_data}")
+market_data_sp = MarketDataLoader(matched_sp_list, seed, game_length).load()
+print(f"Market Data BTC: {market_data}")
+print(f"Market Data SP500: {market_data_sp}")
 portfolio = Portfolio(start_money)
 game_controller = GameController(0, market_data, portfolio)
 game_controller.run_game()
