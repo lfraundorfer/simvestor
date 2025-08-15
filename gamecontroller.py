@@ -21,7 +21,7 @@ from datacleaner import DataCleaner, CleanRow
 from gamesetup import GameSetup
 from user_input_parser import get_user_input, Action
 from history_tracker import HistoryTracker
-
+from stock_data import match_dates
 
 
 
@@ -78,10 +78,13 @@ class GameController():
 
 game_length = int(3)
 start_money = int(100)
-clean_data = DataCleaner("data/btc_historical_data.csv").clean_csv()
-game_setup = GameSetup(clean_data, game_length)
+clean_data_btc = DataCleaner("data/btc_historical_data.csv").clean_csv()
+clean_data_sp = DataCleaner("data/sp500_historical_data.csv").clean_csv()
+matched_btc_list, matched_sp_list = match_dates(clean_data_sp, clean_data_btc)
+
+game_setup = GameSetup(matched_btc_list, game_length)
 seed = game_setup.seed
-market_data = MarketDataLoader(clean_data, seed, game_length).load()
+market_data = MarketDataLoader(matched_btc_list, seed, game_length).load()
 # print(f"Market Data: {market_data}")
 portfolio = Portfolio(start_money)
 game_controller = GameController(0, market_data, portfolio)
