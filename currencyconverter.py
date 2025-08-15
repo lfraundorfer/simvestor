@@ -19,10 +19,10 @@ class CurrencyConverter:
     def convert(self, amount, source_currency: Currency, target_currency:Currency, daily_price:CleanRow) -> float:
         self._validate_input(amount, source_currency, target_currency)
         if source_currency == Currency.USD and target_currency == Currency.BTC:
-            return amount / daily_price.close_price
+            return round((amount / daily_price.close_price),8)
 
         elif source_currency == Currency.BTC and target_currency == Currency.USD:
-            return amount * daily_price.close_price
+            return round((amount * daily_price.close_price),2)
 
         else:
             raise NotImplementedError("Only USD <-> BTC conversion is supported for now.")

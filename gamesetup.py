@@ -25,7 +25,7 @@ class GameSetup():
 
     def _define_seed_bounds(self) -> int:
         maximum_seed_value = len(self.cleandata) - self.gamelength -1
-        print(f"Max. seed value: {maximum_seed_value}, game length: {self.gamelength}")
+        # print(f"Max. seed value: {maximum_seed_value}, game length: {self.gamelength}")
         return maximum_seed_value
     
     def generate_seed(self) -> int:

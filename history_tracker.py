@@ -18,10 +18,8 @@ class HistoryTracker:
         self.finalportfoliovalue = self._calc_final_portfolio_value()
     
     def calc_buy_hold_performance(self):
-        day_one_btc_bought = self.initialportfoliovalue / self.initialprice.close_price
-        final_value = day_one_btc_bought * self.finalprice.close_price
-        percent_gain = ((final_value - self.initialportfoliovalue) / self.initialportfoliovalue) * 100
-        return percent_gain
+        percent_gain = ((self.finalprice.close_price / self.initialprice.close_price) -1 ) * 100
+        return round(percent_gain,2)
     
     def _calc_final_portfolio_value(self):
         btc_final_value = self.portfolio.balance[Currency.BTC] * self.finalprice.close_price
@@ -30,7 +28,7 @@ class HistoryTracker:
     
     def calc_user_performance(self):
         percent_gain = ((self._calc_final_portfolio_value() - self.initialportfoliovalue) / self.initialportfoliovalue)*100
-        return percent_gain
+        return round(percent_gain,2)
     
     def generate_report(self):
         return HistoryReport(buy_hold_gain=self.calc_buy_hold_performance(), user_gain = self.calc_user_performance())
