@@ -70,10 +70,11 @@ class GameController():
             self._advance_game_day()
 
         history_tracker = HistoryTracker(market_data,
+                                         market_data_sp,
                                          initial_portfolio_value=start_money, 
                                          portfolio=portfolio)
         report = history_tracker.generate_report()
-        print(f"Buy hold gain: {report.buy_hold_gain} vs user gain {report.user_gain}")
+        print(f"Buy hold gain: {report.buy_hold_gain} vs user gain {report.user_gain} vs SP500 gain {report.stock_gain}")
         
 
         

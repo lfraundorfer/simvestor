@@ -7,11 +7,13 @@ from datacleaner import CleanRow
 class HistoryReport:
     buy_hold_gain: float
     user_gain: float
+    stock_gain: float
 
 
 class HistoryTracker:
-    def __init__(self, market_data:list[CleanRow], initial_portfolio_value:float, portfolio:Portfolio):
+    def __init__(self, market_data:list[CleanRow], market_data_sp: list[CleanRow], initial_portfolio_value:float, portfolio:Portfolio):
         self.marketdata = market_data
+        self.stockmarketdata = market_data_sp
         self.initialportfoliovalue = initial_portfolio_value
         self.portfolio = portfolio
         self.finalportfoliovalue = self._calc_final_portfolio_value()
@@ -30,10 +32,11 @@ class HistoryTracker:
         return round(percent_gain,2)
     
     def calc_sp500_performance(self):
-        return 
+        percent_gain = ((self.stockmarketdata[-1].close_price / self.stockmarketdata[1].close_price) -1 ) * 100
+        return round(percent_gain,2)
     
     def generate_report(self):
-        return HistoryReport(buy_hold_gain=self.calc_buy_hold_performance(), user_gain = self.calc_user_performance())
+        return HistoryReport(buy_hold_gain=self.calc_buy_hold_performance(), user_gain = self.calc_user_performance(), stock_gain=self.calc_sp500_performance())
     
 
 
