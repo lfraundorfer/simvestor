@@ -20,6 +20,7 @@ from portfolio import Portfolio
 from datacleaner import DataCleaner, CleanRow
 from gamesetup import GameSetup
 from user_input_parser import get_user_input, Action
+from history_tracker import HistoryTracker
 
 
 
@@ -53,14 +54,14 @@ class GameController():
             success = self.portfolio.handle_transaction(decision, day_prices)
             if success:
                 return True
-            print("⚠️ Action not completed. Please choose another.")
+            print("Action not completed. Please choose another.")
 
     
     def run_game(self):
         while self.gameday < len(self.marketdata):
-            print(f"📆 Day: {self.gameday}")
+            print(f"Day: {self.gameday}")
             prices = self._get_todays_prices(self.gameday)
-            print(f"💰 Price: {prices.close_price}")
+            print(f"Price: {prices.close_price}")
 
             if not self._play_day(prices):
                 return
@@ -68,6 +69,9 @@ class GameController():
             print(self.portfolio.get_all_balances())
             self._advance_game_day()
 
+        history_tracker = HistoryTracker(initial_price=self._get_todays_prices(1), final_price=self._get_todays_prices(self.gameday-1), initial_portfolio_value=start_money, portfolio=portfolio)
+        report = history_tracker.generate_report()
+        print(f"Buy hold gain: {report.buy_hold_gain} vs user gain {report.user_gain}")
         
 
         
@@ -78,7 +82,7 @@ clean_data = DataCleaner("data/btc_historical_data.csv").clean_csv()
 game_setup = GameSetup(clean_data, game_length)
 seed = game_setup.seed
 market_data = MarketDataLoader(clean_data, seed, game_length).load()
-print(f"Market Data: {market_data}")
+# print(f"Market Data: {market_data}")
 portfolio = Portfolio(start_money)
 game_controller = GameController(0, market_data, portfolio)
 game_controller.run_game()

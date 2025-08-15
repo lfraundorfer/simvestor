@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from portfolio import Portfolio
 from enums import Currency
+from datacleaner import CleanRow
 
 @dataclass
 class HistoryReport:
@@ -9,7 +10,7 @@ class HistoryReport:
 
 
 class HistoryTracker:
-    def __init__(self, initial_price, final_price, initial_portfolio_value, portfolio:Portfolio):
+    def __init__(self, initial_price:CleanRow, final_price:CleanRow, initial_portfolio_value, portfolio:Portfolio):
         self.initialprice = initial_price
         self.finalprice = final_price
         self.initialportfoliovalue = initial_portfolio_value
@@ -17,13 +18,13 @@ class HistoryTracker:
         self.finalportfoliovalue = self._calc_final_portfolio_value()
     
     def calc_buy_hold_performance(self):
-        day_one_btc_bought = self.initialportfoliovalue / self.initialprice
-        final_value = day_one_btc_bought * self.finalprice
+        day_one_btc_bought = self.initialportfoliovalue / self.initialprice.close_price
+        final_value = day_one_btc_bought * self.finalprice.close_price
         percent_gain = ((final_value - self.initialportfoliovalue) / self.initialportfoliovalue) * 100
         return percent_gain
     
     def _calc_final_portfolio_value(self):
-        btc_final_value = self.portfolio.balance[Currency.BTC] * self.finalprice
+        btc_final_value = self.portfolio.balance[Currency.BTC] * self.finalprice.close_price
         usd_final_value = self.portfolio.balance[Currency.USD]
         return btc_final_value + usd_final_value
     
