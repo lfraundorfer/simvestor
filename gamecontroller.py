@@ -22,7 +22,7 @@ from gamesetup import GameSetup
 from user_input_parser import get_user_input, Action
 from history_tracker import HistoryTracker
 from stock_data import match_dates
-
+from plot_prices import DataPlotter
 
 
 
@@ -31,6 +31,7 @@ class GameController():
         self.gameday = game_day or 1
         self.marketdata = market_data
         self.portfolio = portfolio
+        self.history_of_actions = []
 
     def _advance_game_day(self):
         self.gameday += 1
@@ -44,8 +45,10 @@ class GameController():
         return get_user_input()
     
     def _play_day(self, day_prices: CleanRow) -> bool:
+
         while True:
             decision = self._get_todays_decision()
+            self.history_of_actions.append(decision)
             if decision == Action.HOLD:
                 return True
             if decision == Action.QUIT:
@@ -58,6 +61,8 @@ class GameController():
 
     
     def run_game(self):
+        list_of_prices_until_current_day = [self.marketdata[0].close_price]
+        data_plotter.draw(list_of_prices_until_current_day, self.history_of_actions)
         while self.gameday < len(self.marketdata):
             print(f"Day: {self.gameday}")
             prices = self._get_todays_prices(self.gameday)
@@ -66,6 +71,8 @@ class GameController():
             if not self._play_day(prices):
                 return
 
+            list_of_prices_until_current_day.append(self.marketdata[self.gameday].close_price)
+            data_plotter.draw(list_of_prices_until_current_day, self.history_of_actions)
             print(self.portfolio.get_all_balances())
             self._advance_game_day()
 
@@ -75,6 +82,9 @@ class GameController():
                                          portfolio=portfolio)
         report = history_tracker.generate_report()
         print(f"Buy hold gain: {report.buy_hold_gain} vs user gain {report.user_gain} vs SP500 gain {report.stock_gain}")
+        data_plotter.finalize_plot()
+
+
         
 
         
@@ -93,6 +103,8 @@ print(f"Market Data BTC: {market_data}")
 print(f"Market Data SP500: {market_data_sp}")
 portfolio = Portfolio(start_money)
 game_controller = GameController(0, market_data, portfolio)
+data_plotter = DataPlotter()
 game_controller.run_game()
+
 
 
