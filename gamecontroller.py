@@ -62,17 +62,17 @@ class GameController():
     
     def run_game(self):
         list_of_prices_until_current_day = [self.marketdata[0].close_price]
-        data_plotter.draw(list_of_prices_until_current_day, self.history_of_actions)
         while self.gameday < len(self.marketdata):
             print(f"Day: {self.gameday}")
-            prices = self._get_todays_prices(self.gameday)
-            print(f"Price: {prices.close_price}")
+            today_price = self._get_todays_prices(self.gameday)
+            print(f"Price: {today_price.close_price}")
+            list_of_prices_until_current_day.append(today_price.close_price)
 
-            if not self._play_day(prices):
+            data_plotter.draw(list_of_prices_until_current_day, self.history_of_actions)
+
+            if not self._play_day(today_price):
                 return
 
-            list_of_prices_until_current_day.append(self.marketdata[self.gameday].close_price)
-            data_plotter.draw(list_of_prices_until_current_day, self.history_of_actions)
             print(self.portfolio.get_all_balances())
             self._advance_game_day()
 
