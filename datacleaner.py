@@ -15,8 +15,6 @@ class DataCleaner:
         "date": "End"
     }
 
-    def __init__(self, filename):
-        self.filename = filename
 
     def _extract_column_indices(self, header: list[str]) -> dict[str, int]:
         try:
@@ -29,8 +27,8 @@ class DataCleaner:
         except (ValueError, AttributeError) as e:
             raise ValueError(f"Missing required column in CSV header: {e}")
     
-    def clean_csv(self) -> list[CleanRow]:
-        with open(self.filename) as csv_file:
+    def clean_csv(self, filename) -> list[CleanRow]:
+        with open(filename) as csv_file:
             reader = csv.reader(csv_file)
             try:
                 header = next(reader, None)

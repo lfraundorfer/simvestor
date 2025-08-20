@@ -11,19 +11,19 @@ class HistoryReport:
 
 
 class HistoryTracker:
-    def __init__(self, market_data:list[CleanRow], market_data_sp: list[CleanRow], initial_portfolio_value:float, portfolio:Portfolio):
-        self.marketdata = market_data
+    def __init__(self, crypto_market_data:list[CleanRow], market_data_sp: list[CleanRow], initial_portfolio_value:float, portfolio:Portfolio):
+        self.cryptomarketdata = crypto_market_data
         self.stockmarketdata = market_data_sp
         self.initialportfoliovalue = initial_portfolio_value
         self.portfolio = portfolio
         self.finalportfoliovalue = self._calc_final_portfolio_value()
     
-    def calc_buy_hold_performance(self):
-        percent_gain = ((self.marketdata[-1].close_price / self.marketdata[1].close_price) -1 ) * 100
+    def calc_buy_hold_performance(self, market_data):
+        percent_gain = ((market_data[-1].close_price / market_data[1].close_price) -1 ) * 100
         return round(percent_gain,2)
     
     def _calc_final_portfolio_value(self):
-        btc_final_value = self.portfolio.balance[Currency.BTC] * self.marketdata[-1].close_price
+        btc_final_value = self.portfolio.balance[Currency.BTC] * self.cryptomarketdata[-1].close_price
         usd_final_value = self.portfolio.balance[Currency.USD]
         return btc_final_value + usd_final_value
     
@@ -31,12 +31,15 @@ class HistoryTracker:
         percent_gain = ((self._calc_final_portfolio_value() - self.initialportfoliovalue) / self.initialportfoliovalue)*100
         return round(percent_gain,2)
     
-    def calc_sp500_performance(self):
-        percent_gain = ((self.stockmarketdata[-1].close_price / self.stockmarketdata[1].close_price) -1 ) * 100
-        return round(percent_gain,2)
     
+    def calc_bogle_performance(self):
+        pass
+
+
     def generate_report(self):
-        return HistoryReport(buy_hold_gain=self.calc_buy_hold_performance(), user_gain = self.calc_user_performance(), stock_gain=self.calc_sp500_performance())
+        return HistoryReport(buy_hold_gain=self.calc_buy_hold_performance(self.cryptomarketdata), 
+                             user_gain = self.calc_user_performance(), 
+                             stock_gain=self.calc_buy_hold_performance(self.stockmarketdata))
     
 
 

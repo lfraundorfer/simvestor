@@ -3,8 +3,7 @@
 from datacleaner import CleanRow
 
 class MarketDataLoader:
-    def __init__(self, clean_data: list, seed:int, game_length:int):
-        self.cleandata = clean_data
+    def __init__(self, seed:int, game_length:int):
         self.seed = seed
         self.gamelength = game_length
 
@@ -14,13 +13,13 @@ class MarketDataLoader:
         return (start_index, end_index)
     
 
-    def load(self) -> list[CleanRow]:
+    def load(self, clean_data:list[CleanRow]) -> list[CleanRow]:
         """
         Returns a slice of cleaned data based on seed and game_length.
         """
         start_index, end_index = self._compute_indices()
         try:
-            sliced_clean_data = self.cleandata[start_index:end_index]
+            sliced_clean_data = clean_data[start_index:end_index]
         except TypeError as e:
             raise TypeError(f"Can not use as seed / gamelength: {e}")
         # Have to reverse because csv is in new -> old order

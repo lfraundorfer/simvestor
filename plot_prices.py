@@ -2,6 +2,7 @@ import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 from enums import Action
+import numpy as np
 
 class DataPlotter():
     def __init__(self):

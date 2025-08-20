@@ -76,7 +76,7 @@ class GameController():
             print(self.portfolio.get_all_balances())
             self._advance_game_day()
 
-        history_tracker = HistoryTracker(market_data,
+        history_tracker = HistoryTracker(market_data_btc,
                                          market_data_sp,
                                          initial_portfolio_value=start_money, 
                                          portfolio=portfolio)
@@ -89,20 +89,22 @@ class GameController():
 
         
 
-game_length = int(3)
+game_length = int(5)
 start_money = int(100)
-clean_data_btc = DataCleaner("data/btc_historical_data.csv").clean_csv()
-clean_data_sp = DataCleaner("data/sp500_historical_data.csv").clean_csv()
+data_cleaner = DataCleaner()
+clean_data_btc = data_cleaner.clean_csv("data/btc_historical_data.csv")
+clean_data_sp = data_cleaner.clean_csv("data/sp500_historical_data.csv")
 matched_btc_list, matched_sp_list = match_dates(clean_data_sp, clean_data_btc)
 
 game_setup = GameSetup(matched_btc_list, game_length)
 seed = game_setup.seed
-market_data = MarketDataLoader(matched_btc_list, seed, game_length).load()
-market_data_sp = MarketDataLoader(matched_sp_list, seed, game_length).load()
-print(f"Market Data BTC: {market_data}")
+market_data_loader = MarketDataLoader(seed, game_length)
+market_data_btc = market_data_loader.load(matched_btc_list)
+market_data_sp = market_data_loader.load(matched_sp_list)
+print(f"Market Data BTC: {market_data_btc}")
 print(f"Market Data SP500: {market_data_sp}")
 portfolio = Portfolio(start_money)
-game_controller = GameController(0, market_data, portfolio)
+game_controller = GameController(0, market_data_btc, portfolio)
 data_plotter = DataPlotter()
 game_controller.run_game()
 
