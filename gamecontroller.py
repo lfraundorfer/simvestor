@@ -79,9 +79,11 @@ class GameController():
         history_tracker = HistoryTracker(market_data_btc,
                                          market_data_sp,
                                          initial_portfolio_value=start_money, 
-                                         portfolio=portfolio)
+                                         portfolio=portfolio,
+                                         last_btc_data_entry=last_btc_data,
+                                         last_sp_data_entry = last_sp_data)
         report = history_tracker.generate_report()
-        print(f"Buy hold gain: {report.buy_hold_gain} vs user gain {report.user_gain} vs SP500 gain {report.stock_gain}")
+        print(f"Buy hold gain: {report.buy_hold_gain} vs user gain {report.user_gain} vs SP500 gain {report.stock_gain} vs bogle BTC gain {report.bogle_btc_gain} vs bogle SP500 gain {report.bogle_stock_gain}")
         data_plotter.finalize_plot()
 
 
@@ -101,6 +103,13 @@ seed = game_setup.seed
 market_data_loader = MarketDataLoader(seed, game_length)
 market_data_btc = market_data_loader.load(matched_btc_list)
 market_data_sp = market_data_loader.load(matched_sp_list)
+
+last_btc_data = market_data_loader.load_last_day(matched_btc_list)
+last_sp_data = market_data_loader.load_last_day(matched_sp_list)
+
+## wrong day of SP i sreturned (day 1, not day 0 - not happening for BTC)
+
+
 print(f"Market Data BTC: {market_data_btc}")
 print(f"Market Data SP500: {market_data_sp}")
 portfolio = Portfolio(start_money)

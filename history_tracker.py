@@ -8,15 +8,26 @@ class HistoryReport:
     buy_hold_gain: float
     user_gain: float
     stock_gain: float
+    bogle_btc_gain: float
+    bogle_stock_gain : float
 
 
 class HistoryTracker:
-    def __init__(self, crypto_market_data:list[CleanRow], market_data_sp: list[CleanRow], initial_portfolio_value:float, portfolio:Portfolio):
+    def __init__(self, crypto_market_data:list[CleanRow], 
+                 market_data_sp: list[CleanRow], 
+                 initial_portfolio_value:float, 
+                 portfolio:Portfolio,
+                 last_btc_data_entry: CleanRow,
+                 last_sp_data_entry: CleanRow):
         self.cryptomarketdata = crypto_market_data
         self.stockmarketdata = market_data_sp
         self.initialportfoliovalue = initial_portfolio_value
         self.portfolio = portfolio
         self.finalportfoliovalue = self._calc_final_portfolio_value()
+        self.lastbtcprice = last_btc_data_entry
+        self.laststockprice = last_sp_data_entry
+
+
     
     def calc_buy_hold_performance(self, market_data):
         percent_gain = ((market_data[-1].close_price / market_data[1].close_price) -1 ) * 100
@@ -32,14 +43,17 @@ class HistoryTracker:
         return round(percent_gain,2)
     
     
-    def calc_bogle_performance(self):
-        pass
+    def calc_bogle_performance(self, day_one_price, last_price):
+        bogle_percent_gain = ((last_price / day_one_price) -1) * 100
+        return bogle_percent_gain
 
 
     def generate_report(self):
         return HistoryReport(buy_hold_gain=self.calc_buy_hold_performance(self.cryptomarketdata), 
                              user_gain = self.calc_user_performance(), 
-                             stock_gain=self.calc_buy_hold_performance(self.stockmarketdata))
+                             stock_gain=self.calc_buy_hold_performance(self.stockmarketdata),
+                             bogle_btc_gain=self.calc_bogle_performance(self.cryptomarketdata[1].close_price, last_price=self.lastbtcprice.close_price),
+                             bogle_stock_gain=self.calc_bogle_performance(self.stockmarketdata[1].close_price, last_price=self.laststockprice.close_price))
     
 
 

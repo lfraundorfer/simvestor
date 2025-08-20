@@ -26,3 +26,9 @@ class MarketDataLoader:
         #     raise IndexError(f"Game length out of bounds.")
         #this does not raise an error because slicing just automatically stops at the last index
         return sliced_clean_data
+
+    def load_last_day(self, clean_data: list[CleanRow]) -> CleanRow:
+        """
+        Returns the last entry in the dataset (the final day).
+        """
+        return clean_data[-1]  # The very last row of the full dataset
