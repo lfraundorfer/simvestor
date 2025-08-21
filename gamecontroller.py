@@ -91,7 +91,7 @@ class GameController():
 
         
 
-game_length = int(5)
+game_length = int(3)
 start_money = int(100)
 data_cleaner = DataCleaner()
 clean_data_btc = data_cleaner.clean_csv("data/btc_historical_data.csv")
