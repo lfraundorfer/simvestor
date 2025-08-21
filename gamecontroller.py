@@ -107,8 +107,7 @@ market_data_sp = market_data_loader.load(matched_sp_list)
 last_btc_data = market_data_loader.load_last_day(matched_btc_list)
 last_sp_data = market_data_loader.load_last_day(matched_sp_list)
 
-## wrong day of SP i sreturned (day 1, not day 0 - not happening for BTC)
-
+print(last_btc_data, last_sp_data)
 
 print(f"Market Data BTC: {market_data_btc}")
 print(f"Market Data SP500: {market_data_sp}")
