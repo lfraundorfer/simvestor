@@ -3,13 +3,14 @@
 from datacleaner import CleanRow
 
 class MarketDataLoader:
-    def __init__(self, seed:int, game_length:int):
+    def __init__(self, seed:int, game_length:int, step_size: int):
         self.seed = seed
         self.gamelength = game_length
+        self.stepsize = step_size
 
     def _compute_indices(self):
         start_index = self.seed
-        end_index = start_index + self.gamelength +1 #slicing excludes the last index, hence the +1
+        end_index = start_index + self.gamelength*self.stepsize +1 #slicing excludes the last index, hence the +1
         return (start_index, end_index)
     
 
@@ -19,7 +20,7 @@ class MarketDataLoader:
         """
         start_index, end_index = self._compute_indices()
         try:
-            sliced_clean_data = clean_data[start_index:end_index]
+            sliced_clean_data = clean_data[start_index:end_index:self.stepsize]
         except TypeError as e:
             raise TypeError(f"Can not use as seed / gamelength: {e}")
         # except IndexError as e:

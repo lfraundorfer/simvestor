@@ -98,16 +98,16 @@ clean_data_btc = data_cleaner.clean_csv("data/btc_historical_data.csv")
 clean_data_sp = data_cleaner.clean_csv("data/sp500_historical_data.csv")
 matched_btc_list, matched_sp_list = match_dates(clean_data_sp, clean_data_btc)
 
-game_setup = GameSetup(matched_btc_list, game_length)
+game_setup = GameSetup(matched_btc_list, game_length, step_size=30)
 seed = game_setup.seed
-market_data_loader = MarketDataLoader(seed, game_length)
+market_data_loader = MarketDataLoader(seed, game_length, step_size = 30)
 market_data_btc = market_data_loader.load(matched_btc_list)
 market_data_sp = market_data_loader.load(matched_sp_list)
 
 last_btc_data = market_data_loader.load_last_day(matched_btc_list)
 last_sp_data = market_data_loader.load_last_day(matched_sp_list)
 
-print(last_btc_data, last_sp_data)
+# print(last_btc_data, last_sp_data)
 
 print(f"Market Data BTC: {market_data_btc}")
 print(f"Market Data SP500: {market_data_sp}")

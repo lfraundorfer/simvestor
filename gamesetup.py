@@ -2,10 +2,12 @@ import random
 from datacleaner import CleanRow
 
 class GameSetup():
-    def __init__(self, clean_data:list[CleanRow], game_length:int):
+    def __init__(self, clean_data:list[CleanRow], game_length:int, step_size:int):
         self.cleandata = clean_data
         self.gamelength = game_length
+        self.stepsize = step_size
         self.seed = self.generate_seed()
+        
 
     
     def _check_input_validity(self, seed, gamelength):
@@ -24,7 +26,7 @@ class GameSetup():
 
 
     def _define_seed_bounds(self) -> int:
-        maximum_seed_value = len(self.cleandata) - self.gamelength -1
+        maximum_seed_value = (len(self.cleandata) -1)- (self.gamelength*self.stepsize)
         print(f"Max. seed value: {maximum_seed_value}, game length: {self.gamelength}")
         return maximum_seed_value
     
