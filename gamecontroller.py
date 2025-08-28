@@ -93,14 +93,15 @@ class GameController():
 
 game_length = int(3)
 start_money = int(100)
+step_size = 365
 data_cleaner = DataCleaner()
 clean_data_btc = data_cleaner.clean_csv("data/btc_historical_data.csv")
 clean_data_sp = data_cleaner.clean_csv("data/sp500_historical_data.csv")
 matched_btc_list, matched_sp_list = match_dates(clean_data_sp, clean_data_btc)
 
-game_setup = GameSetup(matched_btc_list, game_length, step_size=30)
+game_setup = GameSetup(matched_btc_list, game_length, step_size)
 seed = game_setup.seed
-market_data_loader = MarketDataLoader(seed, game_length, step_size = 30)
+market_data_loader = MarketDataLoader(seed, game_length, step_size)
 market_data_btc = market_data_loader.load(matched_btc_list)
 market_data_sp = market_data_loader.load(matched_sp_list)
 
