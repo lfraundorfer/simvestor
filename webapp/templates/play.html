@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Simvestor</title>
+  </head>
+  <body>
+    <h1>Day {{ day }}{% if finished %} (finished){% endif %}</h1>
+    <p>{{ current_date }} · Price: {{ current_price }}</p>
+    <p>
+      Portfolio: USD={{ portfolio.USD|default(0) }} · BTC={{
+      portfolio.BTC|default(0) }}
+    </p>
+    <p>Value (USD): {{ portfolio_value_usd }}</p>
+    <p style="margin-top: 0.5rem">{{ message }}</p>
+
+    <p><img alt="Chart" src="/plot.png?d={{ day }}" /></p>
+
+    {% if finished and report is defined %}
+    <h2>Performance</h2>
+    <table border="1" cellpadding="6">
+      <tr>
+        <th>Metric</th>
+        <th>Value</th>
+      </tr>
+      <tr>
+        <td>Your gain</td>
+        <td>{{ report.user_gain_pct }} %</td>
+      </tr>
+      <tr>
+        <td>Buy &amp; Hold BTC</td>
+        <td>{{ report.buy_hold_gain_btc_pct }} %</td>
+      </tr>
+      <tr>
+        <td>Buy &amp; Hold S&amp;P 500</td>
+        <td>{{ report.buy_hold_gain_spx_pct }} %</td>
+      </tr>
+      <tr>
+        <td>Bogle BTC (full)</td>
+        <td>{{ report.bogle_btc_gain_pct }} %</td>
+      </tr>
+      <tr>
+        <td>Bogle S&amp;P (full)</td>
+        <td>{{ report.bogle_spx_gain_pct }} %</td>
+      </tr>
+      <tr>
+        <td>Portfolio value (USD)</td>
+        <td>{{ report.current_portfolio_value_usd }}</td>
+      </tr>
+    </table>
+    {% endif %} {% if not finished %}
+    <form action="/act" method="post" style="margin-top: 1rem">
+      <button name="action" value="BUY" type="submit">
+        BUY (all USD → BTC)
+      </button>
+      <button name="action" value="SELL" type="submit">
+        SELL (all BTC → USD)
+      </button>
+      <button name="action" value="HOLD" type="submit">HOLD</button>
+    </form>
+    {% else %}
+    <p>Game over. <a href="/">Start new</a></p>
+    {% endif %}
+  </body>
+</html>

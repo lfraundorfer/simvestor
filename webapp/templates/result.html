@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Simvestor Result</title>
+  </head>
+  <body>
+    <h1>Preview</h1>
+    <p>Seed: {{ seed }}</p>
+    <p>Range: {{ start_date }} → {{ end_date }}</p>
+    <p>Points: {{ points }}</p>
+    <p>Start price: {{ start_price }}</p>
+    <p>End price: {{ end_price }}</p>
+
+    <img
+      alt="Chart"
+      src="/plot.png?seed={{ seed }}&game_length={{ game_length }}&step_size={{ step_size }}"
+    />
+    <p><a href="/">Back</a></p>
+  </body>
+</html>
